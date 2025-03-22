@@ -1,5 +1,6 @@
 ---
 name: file 3
+publish: '2025-03-22'
 ---
 
 # File 3
