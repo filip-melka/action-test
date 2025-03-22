@@ -8,7 +8,7 @@ today_date = datetime.today().strftime('%Y-%m-%d')
 
 TARGET_DIR = "files"
 
-def safe_git_diff(status_code):
+def get_files_by_status(status_code):
     try:
         output = subprocess.check_output(
             ["git", "diff", "--name-status", "HEAD~1", "HEAD"],
