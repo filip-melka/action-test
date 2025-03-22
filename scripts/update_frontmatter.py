@@ -1,13 +1,32 @@
 import frontmatter
 import os
 from datetime import datetime
+import subprocess
 
 # Get today's date in ISO format (you can change the format as needed)
 today_date = datetime.today().strftime('%Y-%m-%d')
 
+def get_files_by_status(status_code):
+    try:
+        output = subprocess.check_output(
+            ["git", "diff", "--name-status", "HEAD~1", "HEAD"],
+            text=True
+        )
+        lines = output.strip().split("\n")
+        return [
+            line.split("\t")[1]
+            for line in lines
+            if line.startswith(status_code) and line.endswith(".md") and line.split("\t")[1].startswith(TARGET_DIR)
+        ]
+    except subprocess.CalledProcessError:
+        return []
+
 # Get the list of new and modified files from GitHub Actions environment variables
-new_files = os.getenv("NEW_FILES", "").splitlines()
-modified_files = os.getenv("MODIFIED_FILES", "").splitlines()
+# new_files = os.getenv("NEW_FILES", "").splitlines()
+# modified_files = os.getenv("MODIFIED_FILES", "").splitlines()
+
+new_files = get_files_by_status("A")
+modified_files = get_files_by_status("M")
 
 print(new_files, modified_files)
 

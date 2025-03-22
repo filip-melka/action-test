@@ -2,11 +2,18 @@
 
 TARGET_DIR="files"
 
-NEW_FILES=$(git diff --name-only --diff-filter=M -- "$TARGET_DIR")
-MODIFIED_FILES=$(git ls-files --others --exclude-standard -- "$TARGET_DIR")
+NEW_FILES=$(git diff --name-status HEAD~1 HEAD | awk '$1=="A" && $2 ~ /\.md$/ {print $2}')
+MODIFIED_FILES=$(git diff --name-status HEAD~1 HEAD | awk '$1=="M" && $2 ~ /\.md$/ {print $2}')
 
-echo $NEW_FILES
-echo $MODIFIED_FILES
+echo "New files:"
+echo "$NEW_FILES"
+echo "Modified files:"
+echo "$MODIFIED_FILES"
 
-echo $NEW_FILES >> $GITHUB_ENV
-echo $MODIFIED_FILES >> $GITHUB_ENV
+echo "NEW_FILES<<EOF" >> $GITHUB_ENV
+echo "$NEW_FILES" >> $GITHUB_ENV
+echo "EOF" >> $GITHUB_ENV
+
+echo "MODIFIED_FILES<<EOF" >> $GITHUB_ENV
+echo "$MODIFIED_FILES" >> $GITHUB_ENV
+echo "EOF" >> $GITHUB_ENV
