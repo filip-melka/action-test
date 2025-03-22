@@ -9,6 +9,8 @@ today_date = datetime.today().strftime('%Y-%m-%d')
 new_files = os.getenv("NEW_FILES", "").splitlines()
 modified_files = os.getenv("MODIFIED_FILES", "").splitlines()
 
+print(new_files, modified_files)
+
 # Function to update frontmatter
 def update_frontmatter(file_path, frontmatter_key, date_value):
     try:
